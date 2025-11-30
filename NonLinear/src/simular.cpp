@@ -1,4 +1,4 @@
-#include "funciones.h"
+#include "../include/funciones.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -47,7 +47,7 @@ void rungeKutta4(double &x, double &t, double &v, double &m, double &k, double &
 
 void guardarDatos(const string &archivo, double x0, double t0, double v0, double m, double k, 
                     double l, double dt, double tmax) {
-    system("mkdir -p results");
+    system("mkdir -p ../results");
 
     ofstream file(archivo);
     file << fixed << setprecision(6);
