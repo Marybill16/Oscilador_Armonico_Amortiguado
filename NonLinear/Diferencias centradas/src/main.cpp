@@ -12,8 +12,8 @@ const double m = 0.145;
 
 int main() {
     // Nombre del archivo de entrada y salida
-    string archivoEntrada = "../resultados/listas/datos_posicion_tiempo.dat";
-    string archivoSalida = "../resultados/listas/datos_derivadas.dat";
+    string archivoEntrada = "../results/listas/datos_posicion_tiempo.dat";
+    string archivoSalida = "../results/listas/datos_derivadas.dat";
 
     // Arreglos para almacenar datos
     double tiempo[MAX_SIZE], posicion[MAX_SIZE];

@@ -40,7 +40,7 @@ int leerArchivo(const string &nombreArchivo, double tiempo[], double posicion[])
     return i; // Devuelve el número de datos leídos
 }
 
-void calcularDerivadas(const double tiempo[], const double posicion[], double velocidad[], double momentum[], int &n) {
+void calcularDerivadas(const double tiempo[], const double posicion[], double velocidad[], double momentum[], int n) {
     for (int i = 0; i < n; ++i) {
         if (i > 0 && i < n - 1) { // Derivada centrada
             velocidad[i] = (posicion[i + 1] - posicion[i - 1]) / (tiempo[i + 1] - tiempo[i - 1]);
@@ -54,14 +54,14 @@ void calcularDerivadas(const double tiempo[], const double posicion[], double ve
 }
 
 void generarArchivoSalida(const string &archivoSalida, const double tiempo[], 
-                          const double posicion[], const double velocidad[], const double momentum[], int &n) {
+                          const double posicion[], const double velocidad[], const double momentum[], int n) {
     ofstream archivo(archivoSalida.c_str());
     if (!archivo.is_open()) {
         cerr << "Error: No se pudo abrir el archivo de salida." << endl;
         exit(1);
     }
     
-    archivo << "# Tiempo\tPosicion\tCentrada" << endl;
+    archivo << "# Tiempo\tPosicion\tVelocidad\tMomentum" << endl;
     for (int i = 0; i < n; ++i) {
         archivo << fixed << setprecision(6) << tiempo[i] << "\t" << posicion[i] << "\t" << velocidad[i] << "\t" << momentum[i] << endl;
     }

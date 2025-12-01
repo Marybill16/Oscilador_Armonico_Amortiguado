@@ -13,7 +13,7 @@ using namespace std;
 void graficarDatos(const string &archivoSalida) {
     string script = 
         "set terminal pngcairo size 800,600\n"
-        "set output '../resultados/graficas/derivadas_grafico.png'\n"
+        "set output '../results/graficas/derivadas_grafico.png'\n"
         "set xlabel 'Tiempo'\n"
         "set ylabel 'Valores'\n"
         "set key outside\n"
