@@ -1,0 +1,45 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2cm}
+
+\title{Simulación de una Partícula en una Caja 1D con Pared Móvil}
+\author{John Hernán Díaz Forero}
+\date{Octubre 2025}
+
+\begin{document}
+	\maketitle
+	
+	\section{Planteamiento del problema}
+	Una partícula de masa \(m\) se mueve dentro de una caja unidimensional.
+	La pared derecha se desplaza con velocidad constante \(u\):
+	\[
+	x_R(t) = L_0 - ut
+	\]
+	
+	\section{Condiciones de frontera}
+	\[
+	\begin{cases}
+		x < 0 &\Rightarrow v \to -v, \\
+		x > x_R(t) &\Rightarrow v \to -2u - v.
+	\end{cases}
+	\]
+	
+	\section{Solución numérica}
+	Se integra paso a paso:
+	\[
+	x_{n+1} = x_n + v_n \Delta t
+	\]
+	y se registran \(t, x, v, x_R\).
+	
+	\section{Resultados}
+	El gráfico muestra la trayectoria temporal y la animación ilustra la evolución
+	dinámica de la partícula dentro de la caja móvil.
+	
+	\section{Conclusión}
+	El modelo conserva la energía cinética salvo durante el choque con la pared
+	en movimiento, donde el marco de referencia cambia.
+	
+\end{document}

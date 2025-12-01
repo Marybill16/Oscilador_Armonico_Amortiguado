@@ -1,48 +1,70 @@
-#include "funciones.h"
+#include "../include/funciones.h"
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <cstdlib>
+#include <cmath>
+#include <string>
 
 using namespace std;
 
-void pedirDatos(double &x, double &t, double &dt) {
-    cout << "Ingrese el valor inicial de x: ";
-    cin >> x;
-    cout << "Ingrese el valor inicial de t: ";
-    cin >> t;
-    cout << "Ingrese el paso de integracion dt: ";
-    cin >> dt;
-}
+// Definir un tama?o m?ximo para los arreglos
+const int MAX_SIZE = 240;
+// Masa usada en el experimento (kg)
+const double m = 0.145;
 
-double funcion(double x, double t) {
-    return (t * t - 1.0) / (x * x);
-}
-
-void rungeKutta4(double &x, double &t, double dt) {
-    double k1 = dt * funcion(x, t);
-    double k2 = dt * funcion(x + 0.5 * k1, t + 0.5 * dt);
-    double k3 = dt * funcion(x + 0.5 * k2, t + 0.5 * dt);
-    double k4 = dt * funcion(x + k3, t + dt);
-
-    x += (k1 + 2 * k2 + 2 * k3 + k4) / 6.0;
-    t += dt;
-}
-
-void guardarDatos(const string &archivo, double t0, double x0, double dt, double tmax) {
-    system("mkdir -p results");
-
-    ofstream file(archivo);
-    file << fixed << setprecision(6);
-    file << setw(10) << "t" << setw(15) << "x" << endl;
-
-    double x = x0;
-
-    for (double t = t0; t <= tmax; t += dt) {
-        file << setw(10) << t << setw(15) << x << endl;
-        rungeKutta4(x, t, dt);
+int leerArchivo(const string &nombreArchivo, double tiempo[], double posicion[]) {
+    ifstream archivo(nombreArchivo.c_str());
+    
+    if (!archivo.is_open()) {
+        cerr << "Error: No se pudo abrir el archivo de entrada." << endl;
+        exit(1);
     }
+    
+    double t, x;
+    int i = 0;
+    
+    while (archivo >> t >> x) {
+        if (i >= MAX_SIZE) {
+            cerr << "Error: El archivo contiene más datos de los permitidos por el tamaño máximo." << endl;
+            exit(1);
+        }
+        
+        tiempo[i] = t;
+        posicion[i] = x;
+        i++;
+    }
+    archivo.close();
+    
+    return i; // Devuelve el número de datos leídos
+}
 
-    file.close();
-    cout << "Datos guardados en: " << archivo << endl;
+void calcularDerivadas(const double tiempo[], const double posicion[], double velocidad[], double momentum[], int &n) {
+    for (int i = 0; i < n; ++i) {
+        if (i > 0 && i < n - 1) { // Derivada centrada
+            velocidad[i] = (posicion[i + 1] - posicion[i - 1]) / (tiempo[i + 1] - tiempo[i - 1]);
+        } else {
+            velocidad[i] = 0.0; // No se puede calcular para los extremos
+        }
+    }
+    for (int i = 0; i < n; ++i){
+    	momentum[i] = velocidad[i] * m;
+	}
+}
+
+void generarArchivoSalida(const string &archivoSalida, const double tiempo[], 
+                          const double posicion[], const double velocidad[], const double momentum[], int &n) {
+    ofstream archivo(archivoSalida.c_str());
+    if (!archivo.is_open()) {
+        cerr << "Error: No se pudo abrir el archivo de salida." << endl;
+        exit(1);
+    }
+    
+    archivo << "# Tiempo\tPosicion\tCentrada" << endl;
+    for (int i = 0; i < n; ++i) {
+        archivo << fixed << setprecision(6) << tiempo[i] << "\t" << posicion[i] << "\t" << velocidad[i] << "\t" << momentum[i] << endl;
+    }
+    archivo.close();
+    cout << "Archivo generado: " << archivoSalida << endl;
 }
