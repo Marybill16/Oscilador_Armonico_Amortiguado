@@ -26,3 +26,13 @@ set ylabel 'x (m)'
 set zlabel 'v (m/s)'
 set grid
 splot '../results/oscillator.dat' index 0 every ::1 using 1:2:3 with lines lw 2 lc rgb 'blue' title 'x(t)'
+
+#grafico de momento contra x
+
+set terminal pngcairo size 800,600
+set output '../results/p(x).png'
+set title 'p(x)'
+set xlabel 'x (m)'
+set ylabel 'p (kg(m/s))'
+set grid
+plot '../results/oscillator.dat' index 0 every ::1 using 2:4 with lines lw 2 lc rgb 'blue' title 'x(t)'
